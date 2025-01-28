@@ -41,7 +41,7 @@ class DetaySayfa : UIViewController {
             labelYemekAd.text = yemek.yemek_adi
             labelYemekFiyat.text = " ₺ \(yemek.yemek_fiyat ?? "yemek bulunamadı") "
             
-            // "" açsam mı
+        
             
             // if(yemek.yemek_resim_adi == nil) {
             // yemek.yemek_resim_adi = "0"
@@ -56,18 +56,17 @@ class DetaySayfa : UIViewController {
                         case .failure(let error):
                             print("Görsel yükleme hatası: \(error.localizedDescription)")
                         }
+                        
                     }
-                    
                 }
             }
+            
         }
         
-        
-        
     }
-    func updatelabelYemekAdet() {
+   /*func updatelabelYemekAdet() {
         labelYemekAdet.text = "\(yemekAdedi)"
-    }
+    }*/
     
     @IBAction func buttonAdetAzalt(_ sender: Any) {
         if yemekAdedi > 1 {
@@ -102,11 +101,13 @@ class DetaySayfa : UIViewController {
         if let safeContent = yemek {
             if let covertedPrice = Int(safeContent.yemek_fiyat!) {
                 viewModel.sepeteEkle(yemek_adi: safeContent.yemek_adi! , yemek_resim_adi: safeContent.yemek_resim_adi! , yemek_fiyat: String(covertedPrice), yemek_siparis_adet: String(yemekAdedi), kullanici_adi: "reyhan")
+                print("\(yemek?.yemek_adi ?? "Bilinmeyen yemek") sepete eklendi")
             } else {
                 print("Convert Error !")
             }
         }
         performSegue(withIdentifier: "detailToCart", sender: yemek)
+        
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "detailToCart" {

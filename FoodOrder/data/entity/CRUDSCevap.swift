@@ -9,8 +9,6 @@ import Foundation
 import Alamofire
 
 class CRUDSCevap : Codable {
-    
-    
         var success : Int?
         var message : String?
         
