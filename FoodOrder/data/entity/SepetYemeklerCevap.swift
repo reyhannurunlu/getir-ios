@@ -9,7 +9,7 @@ import Foundation
 import Alamofire
 
 class SepetYemeklerCevap : Codable {
-    var sepetYemekler : [SepetYemekler]?
+    var sepet_yemekler : [SepetYemekler]?
     var success : Int?
 
 }

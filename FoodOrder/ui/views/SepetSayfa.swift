@@ -7,6 +7,8 @@
 
 import UIKit
 import Kingfisher
+import Alamofire
+
 
 class SepetSayfa: UIViewController {
     
@@ -16,11 +18,11 @@ class SepetSayfa: UIViewController {
     
     @IBOutlet weak var yemeklerTableView: UITableView!
     
-    var viewModel : SepetSayfaViewModel?
-    var cartContent : Yemekler?
+    var viewModel = SepetSayfaViewModel()
+    var cartContent = Yemekler()
     var yemekListesi = [SepetYemekler]()
     var adet : DetaySayfa?
-    var sepetYemek : SepetYemekler?
+    var sepetYemek = SepetYemekler()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,9 +32,9 @@ class SepetSayfa: UIViewController {
         yemeklerTableView.delegate = self
         yemeklerTableView.dataSource = self
         
-        _ = viewModel?.sepetYemeklerListesi.subscribe(onNext: { liste in
+        _ = viewModel.sepetYemeklerListesi.subscribe(onNext: { liste in
             self.yemekListesi = liste
-            print("geçti")
+            print("SEPETE EKLE GEÇTİİİİİİ")
             
             DispatchQueue.main.async{ // daha performanslı asenkron çalışmalar için
                 self.yemeklerTableView.reloadData()
@@ -44,11 +46,11 @@ class SepetSayfa: UIViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
         
-        viewModel?.yemekleriYukle()
+        viewModel.yemekleriYukle()
         
         super.viewWillAppear(animated)
         
-        viewModel?.sepetiGetir(kullanici_adi: sepetYemek?.kullanici_adi ?? "kullanıcı bulunamadı")
+        viewModel.sepetiGetir(kullanici_adi: sepetYemek.kullanici_adi)
         
         self.yemeklerTableView.reloadData()
         print("geçti33")
@@ -57,7 +59,7 @@ class SepetSayfa: UIViewController {
    
     @IBAction func buttonSepetiOnayla(_ sender: Any) {
         //alert
-        print(cartContent?.yemek_fiyat ?? 0)
+        print(cartContent.yemek_fiyat ?? 0) //adetle çarpşılıp gönderilmeli
         
     }
     
@@ -74,20 +76,18 @@ extension SepetSayfa : UITableViewDelegate,UITableViewDataSource {
     }
     
         
-        
-        
         func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
             let hucre = tableView.dequeueReusableCell(withIdentifier: "sepetYemekHucre", for: indexPath) as! TableViewCell
             
             let sepetElemani = yemekListesi[indexPath.row]
             
             // Burada hücrede göstereceğiniz her bir label’ı doldurursunuz
-            hucre.labelAdetDeger.text = "\(sepetElemani.yemek_siparis_adet ?? 1)"
-            hucre.labelFiyatDeger.text = "\(sepetElemani.yemek_fiyat ?? 0) ₺"
-
-            if let adet = sepetElemani.yemek_siparis_adet,
-               let fiyat = sepetElemani.yemek_fiyat {
-                let toplam = adet * fiyat
+            hucre.labelAdetDeger.text = "\(Int(sepetElemani.yemek_siparis_adet ?? "1") ?? 1)"
+            hucre.labelFiyatDeger.text = "\(Int(sepetElemani.yemek_fiyat ?? "0") ?? 0) ₺"
+            
+            if let adetInt = Int(sepetElemani.yemek_siparis_adet ?? "1"),
+               let fiyatInt = Int(sepetElemani.yemek_fiyat ?? "0") {
+                let toplam = adetInt * fiyatInt
                 hucre.labelToplamFiyatDeger.text = "\(toplam) ₺"
             }
 
