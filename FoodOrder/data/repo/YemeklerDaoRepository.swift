@@ -91,5 +91,27 @@ class YemeklerDaoRepository {
             }
             
         }
+    
+    func sepettenYemekSilme (sepet_yemek_id : String , kullanici_adi : String) { //int değiştir çalışmazsa
+        let params : Parameters = ["kullanici_adi" : kullanici_adi , "sepet_yemek_id" : sepet_yemek_id]
+        
+        AF.request("http://kasimadalan.pe.hu/yemekler/sepettenYemekSil.php",method: .post ,parameters: params) .response { response in
+            if let data = response.data {
+                do {
+                    
+                    
+                    let cevap = try JSONDecoder().decode(CRUDSCevap.self, from: data)
+                    print("başarı : \(cevap.success!)")
+                    print("mesaj : \(cevap.message!)")
+                    self.yemekleriYukle()
+                    print("SİLİNDİ")
+                    
+                }catch{
+                    print(error.localizedDescription)
+                }
+            }
+        }
+        
     }
+}
 

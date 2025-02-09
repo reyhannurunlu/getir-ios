@@ -13,6 +13,7 @@ protocol HucreProtocol {
 
 class CollectionViewCell: UICollectionViewCell {
     
+    @IBOutlet weak var buttonSepeteEkle: UIButton!
     
     @IBOutlet weak var imageViewYemek: UIImageView!
     
@@ -21,9 +22,17 @@ class CollectionViewCell: UICollectionViewCell {
     var hucreProtocol:HucreProtocol?
     var indexPath:IndexPath?
     
-    
+  /*  override func awakeFromNib() {
+          super.awakeFromNib()
+          
+          // ✅ Renk değişimi burada yapılmalı!
+          buttonSepeteEkle.tintColor = UIColor.systemOrange
+      }*/
+   
     
     @IBAction func buttonSepeteEkle(_ sender: Any) {
         hucreProtocol?.sepeteEkleTikla(indexPath: indexPath!)
     }
+    
+    
 }
