@@ -1,4 +1,6 @@
 # Uncomment the next line to define a global platform for your project
+ENV['COCOAPODS_DISABLE_STATS'] = 'true'
+
  platform :ios, '14.0'
 
 target 'FoodOrder' do
